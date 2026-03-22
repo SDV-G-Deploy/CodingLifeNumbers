@@ -14,6 +14,8 @@
       --accent: #7c9cff;
       --accent2: #45d5b0;
       --line: #2a3568;
+      --danger: #ff8b8b;
+      --ok: #7cf5c9;
     }
     * { box-sizing: border-box; }
     body {
@@ -44,6 +46,8 @@
       font-weight: 700;
       padding: 12px 16px;
       border-radius: 12px;
+      border: 0;
+      cursor: pointer;
     }
     .btn.alt { background: var(--accent2); }
     .grid { display: grid; gap: 14px; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); }
@@ -66,6 +70,34 @@
       color: #c5d0ff;
       background: rgba(23,32,68,.4);
     }
+    .form-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 12px;
+      margin-top: 10px;
+    }
+    label { font-size: 14px; color: #d5dcfb; display: block; margin-bottom: 6px; }
+    input, select {
+      width: 100%;
+      padding: 10px 12px;
+      border-radius: 10px;
+      border: 1px solid #3a4787;
+      background: #0f1630;
+      color: #eef2ff;
+      outline: none;
+    }
+    .help { font-size: 13px; color: #9dadde; margin-top: 4px; }
+    .err { color: var(--danger); font-size: 14px; margin-top: 8px; display:none; }
+    .ok { color: var(--ok); font-size: 14px; margin-top: 8px; display:none; }
+    .result {
+      margin-top: 14px;
+      background: #0f1630;
+      border: 1px solid #34427d;
+      border-radius: 12px;
+      padding: 14px;
+      display:none;
+    }
+    code { color: #b8fbff; }
     footer { margin: 38px 0 12px; color: #8f9ac8; font-size: 14px; }
   </style>
 </head>
@@ -136,7 +168,35 @@
       <h2>Старт пилота</h2>
       <div class="card">
         <p><strong>Пилотный поток:</strong> первые 30 участников по спеццене + сбор обратной связи.</p>
-        <p>Хочешь глубже? Выбери трек: психолог / коуч / наставник / обучение / дневник 21 день.</p>
+        <p>Заполни форму — получишь мгновенный базовый код и сохранишь контакт для расширенного разбора.</p>
+
+        <form id="leadForm">
+          <div class="form-grid">
+            <div>
+              <label for="birth">Дата рождения</label>
+              <input id="birth" name="birth" type="text" placeholder="ДД.ММ.ГГГГ" required />
+              <div class="help">Например: 03.04.1993</div>
+            </div>
+            <div>
+              <label for="contactType">Куда прислать расширенный разбор</label>
+              <select id="contactType" name="contactType">
+                <option value="telegram">Telegram</option>
+                <option value="email">Email</option>
+              </select>
+            </div>
+            <div>
+              <label for="contact">Контакт</label>
+              <input id="contact" name="contact" type="text" placeholder="@username или email" required />
+            </div>
+          </div>
+          <div class="btns" style="margin-top:14px">
+            <button class="btn" type="submit">Получить бесплатный разбор</button>
+          </div>
+          <div id="err" class="err">Проверь формат даты: ДД.ММ.ГГГГ</div>
+          <div id="ok" class="ok">Готово: контакт сохранён локально (MVP-режим демо).</div>
+        </form>
+
+        <div id="result" class="result"></div>
       </div>
       <div class="note">
         Это инструмент саморефлексии и планирования, не медицинская/психотерапевтическая диагностика.
@@ -147,5 +207,86 @@
       Coding Life Numbers • MVP Landing
     </footer>
   </div>
+
+  <script>
+    function reduceToDigit(n) {
+      const masters = [11, 22, 33];
+      while (n > 9 && !masters.includes(n)) {
+        n = String(n).split('').reduce((a,b) => a + Number(b), 0);
+      }
+      return n;
+    }
+
+    function displayValue(n) {
+      if (n === 11) return '11/2';
+      if (n === 22) return '22/4';
+      if (n === 33) return '33/6';
+      return String(n);
+    }
+
+    function sumDigits(str) {
+      return str.replace(/\D/g,'').split('').reduce((a,b)=>a+Number(b),0);
+    }
+
+    function parseDate(value) {
+      const m = /^(\d{2})\.(\d{2})\.(\d{4})$/.exec(value.trim());
+      if (!m) return null;
+      const d = Number(m[1]), mo = Number(m[2]), y = Number(m[3]);
+      if (d < 1 || d > 31 || mo < 1 || mo > 12 || y < 1900 || y > 2100) return null;
+      return { d: m[1], mo: m[2], y: m[3] };
+    }
+
+    const form = document.getElementById('leadForm');
+    const err = document.getElementById('err');
+    const ok = document.getElementById('ok');
+    const result = document.getElementById('result');
+
+    form.addEventListener('submit', (e) => {
+      e.preventDefault();
+      err.style.display = 'none';
+      ok.style.display = 'none';
+      result.style.display = 'none';
+
+      const birth = document.getElementById('birth').value;
+      const contactType = document.getElementById('contactType').value;
+      const contact = document.getElementById('contact').value.trim();
+
+      const parsed = parseDate(birth);
+      if (!parsed) {
+        err.style.display = 'block';
+        return;
+      }
+
+      const uiRaw = reduceToDigit(sumDigits(parsed.d));
+      const kernelRaw = reduceToDigit(sumDigits(parsed.y));
+      const hardwareRaw = reduceToDigit(sumDigits(parsed.d + parsed.mo + parsed.y));
+      const missionPlusRaw = reduceToDigit((uiRaw > 9 ? Number(String(uiRaw).split('/')[0]) : uiRaw) + (kernelRaw > 9 ? Number(String(kernelRaw).split('/')[0]) : kernelRaw) + (hardwareRaw > 9 ? Number(String(hardwareRaw).split('/')[0]) : hardwareRaw));
+
+      const ui = displayValue(uiRaw);
+      const kernel = displayValue(kernelRaw);
+      const hardware = displayValue(hardwareRaw);
+      const missionPlus = displayValue(missionPlusRaw);
+
+      const lead = {
+        birthDate: birth,
+        contactType,
+        contact,
+        serialCode3: [ui, kernel, hardware],
+        serialCode4: [ui, kernel, hardware, missionPlus],
+        createdAt: new Date().toISOString()
+      };
+
+      localStorage.setItem('cln_last_lead', JSON.stringify(lead));
+      ok.style.display = 'block';
+
+      result.innerHTML = `
+        <p><strong>Твой базовый результат:</strong></p>
+        <p>Серийный код (3): <code>${ui} — ${kernel} — ${hardware}</code></p>
+        <p>Серийный код (4): <code>${ui} — ${kernel} — ${hardware} — ${missionPlus}</code></p>
+        <p class="help">Дальше можно отправить эти данные в бота/CRM для полного разбора и воронки.</p>
+      `;
+      result.style.display = 'block';
+    });
+  </script>
 </body>
 </html>

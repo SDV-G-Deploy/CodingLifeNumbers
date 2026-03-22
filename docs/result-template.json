@@ -1,0 +1,63 @@
+{
+  "version": "1.0",
+  "product": "CodingLifeNumbers",
+  "lead": {
+    "id": "lead_{{uuid}}",
+    "createdAt": "{{iso_datetime}}",
+    "source": "landing_pages",
+    "utm": {
+      "source": "{{utm_source}}",
+      "medium": "{{utm_medium}}",
+      "campaign": "{{utm_campaign}}"
+    },
+    "contact": {
+      "type": "telegram|email",
+      "value": "{{contact_value}}"
+    },
+    "birthDate": "ДД.ММ.ГГГГ"
+  },
+  "calculation": {
+    "ui": "3",
+    "kernel": "22/4",
+    "hardware": "11/2",
+    "missionPlus": "9",
+    "serialCode3": ["3", "22/4", "11/2"],
+    "serialCode4": ["3", "22/4", "11/2", "9"]
+  },
+  "insights": {
+    "strength": [
+      "Коммуникация и передача смысла",
+      "Системное мышление",
+      "Дипломатия и синхронизация с людьми"
+    ],
+    "shadow": [
+      "Распыление",
+      "Избегание прямого конфликта",
+      "Гиперконтроль"
+    ],
+    "triggers": [
+      "Перегруз задачами",
+      "Неопределенные договоренности",
+      "Отсутствие дедлайнов"
+    ],
+    "antidotes": [
+      "Правило 1 приоритета в день",
+      "Ясные границы и критерии 'готово'",
+      "Короткий ежедневный ритуал завершения"
+    ]
+  },
+  "plan7d": {
+    "day1": "Выбрать 1 приоритетный проект",
+    "day2": "Собрать минимальный рабочий контур",
+    "day3": "Сделать 1 видимый шаг наружу",
+    "day4": "3 целевых диалога",
+    "day5": "Фиксация обратной связи",
+    "day6": "Корректировка плана",
+    "day7": "Завершение цикла + метрики"
+  },
+  "funnel": {
+    "currentStage": "free",
+    "nextOffer": "plus_7d",
+    "recommendedTrack": "coach|psychologist|mentor|course|journal21"
+  }
+}
