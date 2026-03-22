@@ -241,7 +241,22 @@
     const ok = document.getElementById('ok');
     const result = document.getElementById('result');
 
-    form.addEventListener('submit', (e) => {
+    // Прод: вставь endpoint воркера/вебхука.
+    // Пример: const WEBHOOK_URL = 'https://cln-leads.<subdomain>.workers.dev/lead';
+    const WEBHOOK_URL = '';
+
+    async function sendLead(lead) {
+      if (!WEBHOOK_URL) return { sent: false, mode: 'local' };
+      const r = await fetch(WEBHOOK_URL, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(lead)
+      });
+      if (!r.ok) throw new Error(`Webhook error: ${r.status}`);
+      return { sent: true, mode: 'webhook' };
+    }
+
+    form.addEventListener('submit', async (e) => {
       e.preventDefault();
       err.style.display = 'none';
       ok.style.display = 'none';
@@ -273,11 +288,22 @@
         contact,
         serialCode3: [ui, kernel, hardware],
         serialCode4: [ui, kernel, hardware, missionPlus],
-        createdAt: new Date().toISOString()
+        createdAt: new Date().toISOString(),
+        source: 'github_pages'
       };
 
-      localStorage.setItem('cln_last_lead', JSON.stringify(lead));
-      ok.style.display = 'block';
+      try {
+        const transport = await sendLead(lead);
+        localStorage.setItem('cln_last_lead', JSON.stringify(lead));
+        ok.textContent = transport.sent
+          ? 'Готово: заявка отправлена. Скоро придёт расширенный разбор.'
+          : 'Готово: контакт сохранён локально (MVP-режим демо).';
+        ok.style.display = 'block';
+      } catch (e2) {
+        localStorage.setItem('cln_last_lead', JSON.stringify(lead));
+        err.textContent = 'Ошибка отправки в webhook, сохранили локально. Проверь endpoint.';
+        err.style.display = 'block';
+      }
 
       result.innerHTML = `
         <p><strong>Твой базовый результат:</strong></p>
