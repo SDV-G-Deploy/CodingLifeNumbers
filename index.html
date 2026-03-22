@@ -1,0 +1,151 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Coding Life Numbers — MVP</title>
+  <meta name="description" content="Персональный код сильных сторон + тени + план на 7 дней" />
+  <style>
+    :root {
+      --bg: #0b1020;
+      --card: #121936;
+      --text: #eef2ff;
+      --muted: #b6c0e6;
+      --accent: #7c9cff;
+      --accent2: #45d5b0;
+      --line: #2a3568;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      background: linear-gradient(180deg, #0b1020 0%, #0a0f1a 100%);
+      color: var(--text);
+      line-height: 1.5;
+    }
+    .wrap { max-width: 980px; margin: 0 auto; padding: 24px; }
+    .hero {
+      background: radial-gradient(1200px 400px at 20% -20%, #233372 0%, transparent 50%), var(--card);
+      border: 1px solid var(--line);
+      border-radius: 20px;
+      padding: 36px;
+      margin-top: 18px;
+    }
+    h1 { font-size: clamp(28px, 4vw, 46px); line-height: 1.1; margin: 0 0 14px; }
+    h2 { font-size: 26px; margin: 40px 0 16px; }
+    h3 { font-size: 20px; margin: 0 0 8px; }
+    p { margin: 0 0 12px; color: var(--muted); }
+    .btns { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 18px; }
+    .btn {
+      display: inline-block;
+      text-decoration: none;
+      color: #0a1028;
+      background: var(--accent);
+      font-weight: 700;
+      padding: 12px 16px;
+      border-radius: 12px;
+    }
+    .btn.alt { background: var(--accent2); }
+    .grid { display: grid; gap: 14px; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); }
+    .card {
+      background: var(--card);
+      border: 1px solid var(--line);
+      border-radius: 14px;
+      padding: 16px;
+    }
+    ul { margin: 10px 0 0 18px; color: var(--muted); }
+    li { margin-bottom: 6px; }
+    .pricing { display: grid; gap: 14px; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); }
+    .price { font-size: 28px; color: var(--text); margin-top: 6px; }
+    .badge { display: inline-block; font-size: 12px; padding: 4px 8px; border-radius: 999px; background: #2b376e; color: #c8d4ff; }
+    .note {
+      margin-top: 26px;
+      border: 1px dashed #3b4b92;
+      border-radius: 12px;
+      padding: 14px;
+      color: #c5d0ff;
+      background: rgba(23,32,68,.4);
+    }
+    footer { margin: 38px 0 12px; color: #8f9ac8; font-size: 14px; }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <section class="hero">
+      <span class="badge">MVP • Pilot</span>
+      <h1>Узнай свой рабочий профиль по дате рождения и получи план на 7 дней</h1>
+      <p>Сильные стороны, тени, триггеры и конкретные шаги на каждый день — за 3 минуты.</p>
+      <div class="btns">
+        <a class="btn" href="#start">Получить бесплатный разбор</a>
+        <a class="btn alt" href="#pricing">Забрать мой 7-дневный план</a>
+      </div>
+    </section>
+
+    <section>
+      <h2>Что внутри</h2>
+      <div class="grid">
+        <div class="card"><h3>Серийный код</h3><p>Два формата: 3-код и 4-код с короткой расшифровкой.</p></div>
+        <div class="card"><h3>Сила / Тень</h3><p>Что усиливать и где чаще всего сливается энергия.</p></div>
+        <div class="card"><h3>Триггеры + антидоты</h3><p>Типовые стресс-паттерны и действия «что делать сразу».</p></div>
+        <div class="card"><h3>Фокус 7 дней</h3><p>Чеклист ежедневных шагов под твой профиль.</p></div>
+      </div>
+    </section>
+
+    <section>
+      <h2>Кому поможет</h2>
+      <div class="card">
+        <ul>
+          <li>Тем, кто распыляется и не доводит задачи до результата</li>
+          <li>Тем, кому сложно с границами, конфликтами и перегрузом</li>
+          <li>Тем, кто хочет понять «как мне работать в плюс»</li>
+        </ul>
+      </div>
+    </section>
+
+    <section id="pricing">
+      <h2>Тарифы MVP</h2>
+      <div class="pricing">
+        <div class="card">
+          <h3>Free — Диагностика</h3>
+          <p class="price">0 €</p>
+          <ul>
+            <li>Краткий код + базовая расшифровка</li>
+            <li>3 антидота по энергосливам</li>
+          </ul>
+        </div>
+        <div class="card">
+          <h3>Plus — Практика 7 дней</h3>
+          <p class="price">9–19 €</p>
+          <ul>
+            <li>Полный блок: сила / тень / триггеры / антидоты</li>
+            <li>Чеклист на 7 дней (PDF / Notion)</li>
+          </ul>
+        </div>
+        <div class="card">
+          <h3>Deep — Персональный разбор</h3>
+          <p class="price">49–99 €</p>
+          <ul>
+            <li>Персональная расшифровка (текст/голос 15–20 мин)</li>
+            <li>Рекомендованный трек: коуч / психолог / обучение</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <section id="start">
+      <h2>Старт пилота</h2>
+      <div class="card">
+        <p><strong>Пилотный поток:</strong> первые 30 участников по спеццене + сбор обратной связи.</p>
+        <p>Хочешь глубже? Выбери трек: психолог / коуч / наставник / обучение / дневник 21 день.</p>
+      </div>
+      <div class="note">
+        Это инструмент саморефлексии и планирования, не медицинская/психотерапевтическая диагностика.
+      </div>
+    </section>
+
+    <footer>
+      Coding Life Numbers • MVP Landing
+    </footer>
+  </div>
+</body>
+</html>
